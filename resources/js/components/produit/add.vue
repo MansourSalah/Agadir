@@ -18,9 +18,10 @@
                 </div>
                 <div class="col-sm-6">
                     <div class="form-group">
-                        <label>Catégorie:</label>
-                        <select class="form-control" name="categorie">
-                            <option value="">1</option>
+                        <label>Catégories:</label>
+                        <select class="form-control" name="categorie" v-on:change="select($event)">
+                            <option hidden>Choisir une Catégorie</option>
+                            <option v-for="categ  in categs" :key="categ.id" :value="categ.id">{{categ.nom}}</option>
                         </select>
                     </div>
                 </div>
@@ -62,14 +63,21 @@
 export default {
         data(){
             return {
-              nom: '',
-              categ_id:'',
-              image:'',
-              prix:'',
-              description:'',
-              flag:'',
-              message:''
+                categs:{},
+                nom: '',
+                categ_id:'',
+                image:'',
+                prix:'',
+                description:'',
+                flag:'',
+                message:''    
             }
+        },
+        created(){
+            axios.get('/api/admin/categorie/liste')
+            .then((res) => {
+                this.categs=res.data;
+            });
         },
         methods: {
             prodAdd(){
@@ -91,6 +99,9 @@ export default {
             onFileChange(e){
                 this.image = e.target.files[0];
             },
+            select(event){
+                this.categ_id=event.target.value;
+            }
         }
 
 }

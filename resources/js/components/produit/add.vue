@@ -1,6 +1,6 @@
 <template>
     <div class="container prodAdd">
-       <h1>Nouveaux Produit</h1>
+       <h1>Nouveau Produit</h1>
        <div class="row">
            <div class="col-sm-12">
                 <div class="alert" v-bind:class="{ 'alert-success': flag, 'alert-danger': !flag }">

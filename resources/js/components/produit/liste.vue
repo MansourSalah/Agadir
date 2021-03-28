@@ -2,7 +2,7 @@
     <div class="container prodList">
        <h1>Produits</h1>
 
-        <router-link class="btn btn-primary add" to="/admin/categories/ajout"><i class="icofont-ui-add"></i> Nouvelle Catégorie</router-link>
+        <router-link class="btn btn-primary add" to="/admin/produits/ajout"><i class="icofont-ui-add"></i> Nouveau Produit</router-link>
         
         <table  id="myTable" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
             <thead>

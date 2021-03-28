@@ -22,6 +22,12 @@ Route::get('/admin/produit/detail/{id}',function () {return view('admin');});
 //action
 Route::get("/api/admin/produit/first/{id}",[ProduitController::class,'first']);
 Route::get("/api/admin/produit/liste",[ProduitController::class,'liste']);
+Route::get("/api/admin/produit/where/{categ_id}",[ProduitController::class,'where']);
 Route::post("/api/admin/produit/ajouter",[ProduitController::class,'ajouter']);
 Route::post("/api/admin/produit/modifier",[ProduitController::class,'modifier']);
 Route::post("/api/admin/produit/supprimer",[ProduitController::class,'supprimer']);
+
+//*Interface client*//
+Route::get('/', function () {return view('client');});//page des catégorie
+Route::get('/produits/{categ_id}', function () {return view('client');});//pages des produits
+Route::get('/produit/detail/{id}', function () {return view('client');});//detail de produit

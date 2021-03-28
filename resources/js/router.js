@@ -11,6 +11,10 @@ import ProdListe from './components/produit/Liste.vue';
 import ProdAdd from './components/produit/Add.vue';
 import ProdDetail from './components/produit/Detail.vue';
 
+import Produits from './components/client/Produits.vue';
+import DetailProduit from './components/client/DetailProd.vue';
+import Categories from './components/client/Categories.vue';
+
 
 const routes= [
         {path: '/admin/categories', component: CategListe, name:'categListe'},
@@ -19,7 +23,11 @@ const routes= [
 
         {path: '/admin/produits', component: ProdListe, name:'prodListe'},
         {path: '/admin/produits/ajout', component:ProdAdd, name:"prodAdd"},
-        {path: '/admin/produit/detail/:id', component:ProdDetail, name:"prodDetail"}
+        {path: '/admin/produit/detail/:id', component:ProdDetail, name:"prodDetail"},
+
+        {path: '/', component: Categories, name:'categories'},
+        {path: '/produits/:categ_id', component:Produits, name:"produits"},
+        {path: '/produit/detail/:id', component:DetailProduit, name:"detailProduit"}
     ];
 
 const router = new VueRouter({

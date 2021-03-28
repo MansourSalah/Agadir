@@ -31,3 +31,19 @@ Route::post("/api/admin/produit/supprimer",[ProduitController::class,'supprimer'
 Route::get('/', function () {return view('client');});//page des catégorie
 Route::get('/produits/{categ_id}', function () {return view('client');});//pages des produits
 Route::get('/produit/detail/{id}', function () {return view('client');});//detail de produit
+
+//*authentification*//
+//view
+Route::get("/login",function () {return view('client');});
+Route::get("/mot-passe-oublie",function () {return view('client');});
+Route::get("/inscrire",function () {return view('client');});
+Route::get("/nouveau-mot-passe/{token}",function () {return view('client');});
+Route::get("/sendMail",function () {return view('client');});
+Route::get("/verifier",function () {return view('client');});
+//action
+Route::post('/api/logout',[AuthController::class,'logout']);
+Route::post("/api/verifier",[AuthController::class,'verifier']);
+Route::post("/api/compte/add",[AuthController::class,'add']);
+Route::post("/api/compte/login",[AuthController::class,'login']);
+Route::post("/api/mot-passe-oublie/sendMail",[AuthController::class,'sendMail_changePassword']);
+Route::post("/api/mot-passe-oublie/change",[AuthController::class,'changePassword']);

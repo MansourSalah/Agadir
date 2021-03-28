@@ -39,6 +39,9 @@ class CategController extends Controller
     public function ajouter(Request $rq){
         try{
             //authentifiction
+            if(!parent::isAdmin()){//si l'utilisateur n'est pas authentifié
+                return response()->json(['flag'=>false,'message'=>"Vous n'avez pas le droit d'effectuer cette opération"]);
+            }
             $validation = Validator::make($rq->all(), [
                 'nom'=> 'required','description'=>'required','image'=>'required',
             ]);
@@ -65,6 +68,9 @@ class CategController extends Controller
     public function supprimer(Request $rq){
         try{
             //authentifiction
+            if(!parent::isAdmin()){//si l'utilisateur n'est pas authentifié
+                return response()->json(['flag'=>false,'message'=>"Vous n'avez pas le droit d'effectuer cette opération"]);
+            }
             $categ=Categorie::where('id',$rq->categ_id);
             if(!$categ->exists()){
                 return response()->json(['flag'=>false,'message'=>"Impossible!! Cette catégorie n'existe pas."]);
@@ -89,6 +95,9 @@ class CategController extends Controller
     public function modifier(Request $rq){
         try{
             //authentifiction
+            if(!parent::isAdmin()){//si l'utilisateur n'est pas authentifié
+                return response()->json(['flag'=>false,'message'=>"Vous n'avez pas le droit d'effectuer cette opération"]);
+            }
             $validation = Validator::make($rq->all(), [
                 'nom'=> 'required','description'=>'required','categ_id'=>'required',
             ]);

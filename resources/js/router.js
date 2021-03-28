@@ -15,6 +15,8 @@ import Produits from './components/client/Produits.vue';
 import DetailProduit from './components/client/DetailProd.vue';
 import Categories from './components/client/Categories.vue';
 
+import Login from './components/auth/Login.vue';
+import Inscription from './components/auth/Inscription.vue';
 
 const routes= [
         {path: '/admin/categories', component: CategListe, name:'categListe'},
@@ -27,7 +29,11 @@ const routes= [
 
         {path: '/', component: Categories, name:'categories'},
         {path: '/produits/:categ_id', component:Produits, name:"produits"},
-        {path: '/produit/detail/:id', component:DetailProduit, name:"detailProduit"}
+        {path: '/produit/detail/:id', component:DetailProduit, name:"detailProduit"},
+
+        {path: '/login', component: Login, name:'login'},
+        {path: '/inscrire', component:Inscription, name:"inscription"}
+    
     ];
 
 const router = new VueRouter({

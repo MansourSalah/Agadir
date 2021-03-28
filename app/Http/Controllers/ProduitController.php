@@ -18,7 +18,7 @@ use File;
 //*********************************** */
 class ProduitController extends Controller
 {
-    public function where($categ_id){
+    public function where($categ_id){//cette fonction pour filter les produit selon le catégorie
         try{
             return Produit::where('categ_id',$categ_id)->get();
         }catch(Throwable $e) {
@@ -26,7 +26,7 @@ class ProduitController extends Controller
             return response()->json(['flag'=>false,'message'=>$e->getMessage()]);
         } 
     }
-    public function first($id){
+    public function first($id){//return le produit qui'a un ID sélectionné et le nom de catégorie
         try{
             $prod=Produit::findOrFail($id);
             $prod->image=asset("img/produit")."/".$prod->image;
@@ -36,7 +36,7 @@ class ProduitController extends Controller
             return response()->json(['flag'=>false,'message'=>$e->getMessage()]);
         }
     }
-    public function liste(Request $rq){
+    public function liste(Request $rq){//return la liste des produits
         try{
             return Produit::all();
         }catch(Throwable $e) {
@@ -46,13 +46,16 @@ class ProduitController extends Controller
     }
     public function ajouter(Request $rq){
         try {
-            //authentification
-            $validation = Validator::make($rq->all(), [
+            //authentifiction
+            if(!parent::isAdmin()){//si l'utilisateur n'est pas authentifié
+                return response()->json(['flag'=>false,'message'=>"Vous n'avez pas le droit d'effectuer cette opération"]);
+            }
+            $validation = Validator::make($rq->all(), [//les régles des attribus reçus
                 'nom'=> 'required','prix'=>'required',
                 'categ_id' => 'required','image'=>'required',
                 'description'=>'required',
             ]);
-            if(!$validation->passes()){
+            if(!$validation->passes()){//si les entrées ne respectent pas les règles
                 return response()->json(['flag'=>false,'message'=>"Veuillez saisir toutes les informations"]);
             }
             //verifier l'existence du nom de produit
@@ -63,13 +66,14 @@ class ProduitController extends Controller
             if(!Categorie::where('id',$rq->categ_id)->exists()){
                 return response()->json(['flag'=>false,'message'=>"Cette catégorie n'existe pas"]);
             }
-            //ajouter les images
+            //ajouter le produit 
             $prod = new Produit();
             $prod->nom=$rq->nom;
             $prod->prix=$rq->prix;
             $prod->categ_id=$rq->categ_id;
             $prod->description=$rq->description;
             $prod->save();
+            //charger l'image de produit dan le dossier public/img/produit
             $nomfile=$prod->id.rand(1111,9999).".".$rq->image->getClientOriginalExtension();
             $rq->image->move(public_path("img\produit"),$nomfile);
             $prod->image=$nomfile;
@@ -83,15 +87,18 @@ class ProduitController extends Controller
     public function supprimer(Request $rq){
         try{
             //authentifiction
+            if(!parent::isAdmin()){//si l'utilisateur n'est pas authentifié
+                return response()->json(['flag'=>false,'message'=>"Vous n'avez pas le droit d'effectuer cette opération"]);
+            }
             $prod=Produit::where('id',$rq->prod_id);
-            if(!$prod->exists()){
+            if(!$prod->exists()){//verfifier l'exsitance du produit
                 return response()->json(['flag'=>false,'message'=>"Impossible!! Ce produit n'existe pas."]);
             }
             $prod=$prod->first();
-            //supprimer l'image de produit
+            //supprimer l'image de produit si'il existe
             if(File::exists(public_path()."\img\produit\\".$prod->image))
                 File::delete( public_path()."\img\produit\\".$prod->image);
-            $prod->first()->delete();//supprimer le produit
+            $prod->first()->delete();//Puis supprimer le produit
             return response()->json(['flag'=>true,'message'=>"La suppression a ete effectué avec success"]);
         }catch(Throwable $e) {
             ErreurController::add('Produit','supprimer',$e);//enregistrer l'erreur dans la base de données
@@ -101,10 +108,13 @@ class ProduitController extends Controller
     public function modifier(Request $rq){
         try{
             //authentifiction
-            $validation = Validator::make($rq->all(), [
+            if(!parent::isAdmin()){//si l'utilisateur n'est pas authentifié
+                return response()->json(['flag'=>false,'message'=>"Vous n'avez pas le droit d'effectuer cette opération"]);
+            }
+            $validation = Validator::make($rq->all(), [//Définir les régles des entrées
                 'nom'=> 'required','description'=>'required','prix'=>'required','prod_id'=>'required',
             ]);
-            if(!$validation->passes()){
+            if(!$validation->passes()){//verfier si les régles sont respectées
                 return response()->json(['flag'=>false,'message'=>"Veuillez entrer toutes les informations."]);
             }
             $prod=Produit::where('id',$rq->prod_id);

@@ -1,0 +1,11 @@
+.container h1{
+    text-align: center;
+    padding: 20px;
+}
+.container .spinner-border{
+    display: none;
+}
+.alert{
+    text-align: center;
+    display: none;
+}
